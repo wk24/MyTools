@@ -6,6 +6,9 @@ import kotlinx.android.synthetic.main.activity_color_alpha.*
 
 /**
  * 百分比透明度, 转换成十六进制
+ *
+ * 弹性布局
+ *
  */
 class ColorAlphaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
