@@ -1,6 +1,8 @@
 package com.wuk.mytools.utils;
 
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.util.Log;
 
 

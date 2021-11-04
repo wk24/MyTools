@@ -15,7 +15,8 @@
             android:layout_height="60dp"
             android:background="@color/purple_200"
             android:gravity="center"
-            android:text="透明度转换" />
+            android:text="透明度转换"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/tv_recycler"
@@ -23,7 +24,8 @@
             android:layout_height="60dp"
             android:background="@color/purple_200"
             android:gravity="center"
-            android:text="拖拽列表"/>
+            android:text="拖拽列表"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/tv_bookshelf"
@@ -48,6 +50,14 @@
             android:background="@color/purple_200"
             android:gravity="center"
             android:text="手写板"/>
+
+        <TextView
+            android:id="@+id/tv_slide"
+            android:layout_width="156dp"
+            android:layout_height="60dp"
+            android:background="@color/purple_200"
+            android:gravity="center"
+            android:text="卡片滑动"/>
     </LinearLayout>
 
 

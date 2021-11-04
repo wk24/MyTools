@@ -1,8 +1,9 @@
 package com.wuk.mytools
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Resources
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -42,7 +43,24 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, DrawActivity::class.java)
             startActivity(intent)
         }
+        tv_slide.setOnClickListener{
+            val intent = Intent(this, SlideCardActivity::class.java)
+            startActivity(intent)
+        }
     }
 
+//    override fun onConfigurationChanged(newConfig: Configuration) {
+//        super.onConfigurationChanged(newConfig)
+//    }
 
+    override fun getResources(): Resources? {
+        //禁止app字体大小跟随系统字体大小调节
+        val resources = super.getResources()
+        if (resources != null && resources.configuration.fontScale != 1.0f) {
+            val configuration = resources.configuration
+            configuration.setToDefaults()
+            resources.updateConfiguration(configuration, resources.displayMetrics)
+        }
+        return resources
+    }
 }
