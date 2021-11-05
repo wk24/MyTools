@@ -47,6 +47,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SlideCardActivity::class.java)
             startActivity(intent)
         }
+        tv_drop.setOnClickListener{
+            val intent = Intent(this, DragActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 //    override fun onConfigurationChanged(newConfig: Configuration) {

@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTools">
-        <activity android:name=".DrawActivity"></activity>
+        <activity android:name=".DragActivity"></activity>
+        <activity android:name=".DrawActivity" />
         <activity android:name=".BookshelfByGridActivity" />
         <activity android:name=".BookshelfActivity" />
         <activity android:name=".CollectionActivity" />
