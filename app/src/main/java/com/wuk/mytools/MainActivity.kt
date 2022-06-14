@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.wuk.mytools.utils.JsonUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -15,12 +16,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         /**
          * 透明度转换
          */
         tv_color_alpha.setOnClickListener{
-            val intent = Intent(this, ColorAlphaActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(this, ColorAlphaActivity::class.java)
+//            startActivity(intent)
+
+            JsonUtil.getInstance().log()
         }
 
 
