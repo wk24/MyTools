@@ -1,2 +1,3 @@
+include ':wk-tbs'
 include ':app'
 rootProject.name = "MyTools"
