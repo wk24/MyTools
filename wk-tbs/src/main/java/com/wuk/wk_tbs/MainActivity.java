@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.tencent.smtt.export.external.TbsCoreSettings;
 import com.tencent.smtt.sdk.QbSdk;
+import com.tencent.smtt.sdk.TbsDownloader;
 import com.tencent.smtt.sdk.TbsListener;
 import com.tencent.smtt.sdk.TbsReaderView;
 
@@ -25,6 +26,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv1;
+    private QbSdk.PreInitCallback cb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         String path = getApplication().getFilesDir() + "/test/";
-        String name = "1.pdf";
+//        String name = "1.pdf";
+        String name = "1.docx";
         AssetsUtil.copyFileFromAssets(this, name , path , name);
 
         File file = new File(path + name);
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 initTBS();
+
             }
         });
 
@@ -81,7 +85,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+
     public void initTBS() {
+
+        QbSdk.reset(this);
+
         HashMap map = new HashMap();
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
@@ -95,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         tv1.setText("下载X5内核完成");
+                        if (100 != i){
+                            Log.e("QbSdk", "run: 1111111111111111111:" + i );
+                            TbsDownloader.startDownload(MainActivity.this);
+                        }
                     }
                 });
 
@@ -108,6 +122,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         tv1.setText("安装X5内核进度" + i);
+                        if (232 == i){
+                            QbSdk.initX5Environment(getApplicationContext(), cb);
+                        }
                     }
                 });
 
@@ -129,12 +146,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
+        cb = new QbSdk.PreInitCallback() {
             @Override
             public void onViewInitFinished(boolean arg0) {
                 // x5內核初始化完成的回调，true表x5内核加载成功，否则表加载失败，会自动切换到系统内核。
                 Log.d("QbSdk", " 内核加载 " + arg0);
                 Toast.makeText(MainActivity.this, " 内核加载 " + arg0, Toast.LENGTH_SHORT).show();
+                if (!arg0){
+                    QbSdk.reset(MainActivity.this);
+
+                    HashMap map = new HashMap();
+                    map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
+                    map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
+                    QbSdk.initTbsSettings(map);
+
+                    QbSdk.setDownloadWithoutWifi(true);
+                    QbSdk.initX5Environment(getApplicationContext(), cb);
+                }
             }
 
             @Override
