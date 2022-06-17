@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tv1;
     private QbSdk.PreInitCallback cb;
+    private TextView tv2;
+    private TbsReaderView mTbsReaderView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,49 +45,84 @@ public class MainActivity extends AppCompatActivity {
 
 
         tv1 = findViewById(R.id.tv1);
-        TextView tv2 = findViewById(R.id.tv2);
+        tv2 = findViewById(R.id.tv2);
         RelativeLayout relativeLayout = findViewById(R.id.rl);
         tv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initTBS();
-
+//                tv1.setVisibility(View.INVISIBLE);
+//                boolean needInitX5FirstTime = QbSdk.isNeedInitX5FirstTime();
+//
+//                boolean tbsCoreInited = QbSdk.isTbsCoreInited();
+//
+//                if (needInitX5FirstTime){
+                    initTBS();
+//                }else{
+//                    tv2.setVisibility(View.VISIBLE);
+//                }
             }
         });
 
         tv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean tbsCoreInited = QbSdk.isTbsCoreInited();
+                Log.e("TAG", "tbsCoreInited: "+tbsCoreInited);
+//                boolean needInitX5FirstTime = QbSdk.isNeedInitX5FirstTime();
+//                Log.e("TAG", "needInitX5FirstTime: "+needInitX5FirstTime);
 
-                TbsReaderView mTbsReaderView = new TbsReaderView(MainActivity.this, new TbsReaderView.ReaderCallback(){
+//                if (needInitX5FirstTime){
+//                    initTBS();
+//                }else{
+                    if (tbsCoreInited){
+                        if (mTbsReaderView != null){
+                            mTbsReaderView.onStop();
+                        }
 
-                    @Override
-                    public void onCallBackAction(Integer integer, Object o, Object o1) {
-                        Log.e("TAG", "onCallBackAction: " + integer );
+                        openBook(relativeLayout, file);
+                    }else{
+                        QbSdk.preInit(MainActivity.this, new QbSdk.PreInitCallback() {
+                            @Override
+                            public void onCoreInitFinished() {
+
+                            }
+
+                            @Override
+                            public void onViewInitFinished(boolean b) {
+                                openBook(relativeLayout, file);
+                            }
+                        });
                     }
-                });
-
-                relativeLayout.addView(mTbsReaderView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    //不使用黑暗模式
-                    mTbsReaderView.setForceDarkAllowed(false);
-                }
-                String extensionName = FileUtils.getFileType(file.getPath());
-                Bundle bundle = new Bundle();
-                bundle.putString(TbsReaderView.KEY_FILE_PATH, file.getPath());
-                bundle.putString(TbsReaderView.KEY_TEMP_PATH, FileUtils.createCachePath(MainActivity.this));
-                boolean result = mTbsReaderView.preOpen(extensionName, false);
-                if (result) {
-                    mTbsReaderView.openFile(bundle);
-                }
-
+//                }
             }
         });
 
 
     }
 
+    private void openBook(RelativeLayout relativeLayout, File file) {
+        mTbsReaderView = new TbsReaderView(MainActivity.this, new TbsReaderView.ReaderCallback(){
 
+            @Override
+            public void onCallBackAction(Integer integer, Object o, Object o1) {
+                Log.e("TAG", "onCallBackAction: " + integer );
+            }
+        });
+
+        relativeLayout.addView(mTbsReaderView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            //不使用黑暗模式
+            mTbsReaderView.setForceDarkAllowed(false);
+        }
+        String extensionName = FileUtils.getFileType(file.getPath());
+        Bundle bundle = new Bundle();
+        bundle.putString(TbsReaderView.KEY_FILE_PATH, file.getPath());
+        bundle.putString(TbsReaderView.KEY_TEMP_PATH, FileUtils.createCachePath(MainActivity.this));
+        boolean result = mTbsReaderView.preOpen(extensionName, false);
+        if (result) {
+            mTbsReaderView.openFile(bundle);
+        }
+    }
 
 
     public void initTBS() {
@@ -167,7 +204,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCoreInitFinished() {
-                tv1.setText("内核初始化完毕:");
+                tv1.setText("内核初始化完毕");
+                tv2.setVisibility(View.VISIBLE);
                 //内核初始化完毕
                 Log.d("QbSdk", "内核初始化完毕");
             }
