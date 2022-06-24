@@ -5,15 +5,7 @@ import android.os.Environment;
 
 import java.io.File;
 
-/**
- * @author 猿小蔡
- * @name TBSDemo
- * @class name：com.jackfruit.tbsdemo
- * @class describe
- * @createTime 2020/11/3 18:01
- * @change
- * @changTime
- */
+
 public class FileUtils {
 
   /**

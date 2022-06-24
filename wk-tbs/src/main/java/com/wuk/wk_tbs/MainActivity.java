@@ -159,9 +159,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         tv1.setText("安装X5内核进度" + i);
-                        if (232 == i){
-                            QbSdk.initX5Environment(getApplicationContext(), cb);
-                        }
                     }
                 });
 
