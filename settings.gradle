@@ -2,3 +2,5 @@ include ':myrecyclerview'
 include ':wk-tbs'
 include ':app'
 rootProject.name = "MyTools"
+include ':banner'
+include ':mycapture'
